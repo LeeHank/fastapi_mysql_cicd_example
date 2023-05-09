@@ -30,3 +30,5 @@ test-job:
   script:
     - pwd
     - ls -a
+    - source venv/bin/activate
+    - pytest
