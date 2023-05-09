@@ -1,0 +1,18 @@
+stages: # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job: # This job runs in the build stage, which runs first.
+  variables:
+    my_name: "hahahahaha"
+  stage: build
+  tags:
+    - shell
+    - local-gitlab-runner
+  script:
+    - echo "Hello! my name is $my_name"
+    - pwd
+    - ls -a
+    - echo "Compiling the code..."
+    - echo "Compile complete."
