@@ -32,5 +32,20 @@ docker run --name web_phpmyadmin -e PMA_HOST="hank-mysql" --link hank-mysql -p 6
 # --------------------------
 
 1. [bash] sudo apt-get install apache2-utils -y
-ab -c 80 -n 100 'http://3.21.75.55:6979/'
 2. [bash] ab -c 80 -n 1000 'http://3.21.75.55:6979/iqm_log/?limit=100' # 同時有 80 位使用者，總請求 1000 次
+
+# -------------------------
+# gitlab cicd part
+# -------------------------
+
+1. [bash] gitlab-runner register # 他會在 current_user 帳號下，開一個 builds 資料夾，裡面新增 id 資料夾，然後把專案資料夾放進去
+2. [bash] gitlab-runner run # 因為是個人帳號的 runner, 所以要寫 run 才開啟服務，如果上一步用 sudo gitlab-runner register, 
+# 那服務會自動開啟, 而帳號是 gitlab-runner, 所以可能會碰到權限問題要解決
+3. [bash] 寫 .gitlab-ci.yml  
+4. [gitlab] 新增環境變數 (setting/cicd/variables)
+
+# ---------------------
+# 多備份一份到 github
+# ---------------------
+git remote set-url --add --push origin github_url
+git remote set-url --add --push origin gitlab_url
