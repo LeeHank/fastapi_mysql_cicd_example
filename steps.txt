@@ -1,0 +1,36 @@
+# ---------------------------
+# 建網路
+# ---------------------------
+
+1. [bash] docker network create --driver bridge iqm_network2
+
+# ---------------------------
+# mysql + phpmyadmin part
+# ---------------------------
+
+1. [bash]: docker volume create iqm_mysql_volume2
+2. 寫 iqm_mysql_docker_compose.yml 中，有關 mysql 和 phpmyadmin 的部分
+3. [bash] docker-compose -f iqm_mysql_docker_compose.yml up -d
+4. 用瀏覽器去 phpmyadmin 看一下，確認可用 mysql  
+docker run --name hank-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 6976:3306 -d mysql:5.7
+docker run --name web_phpmyadmin -e PMA_HOST="hank-mysql" --link hank-mysql -p 6975:80 -d phpmyadmin
+
+
+# ---------------------------
+# fastapi part
+# ---------------------------
+
+1. [bash] python -m venv venv
+2. [bash] source venv/bin/activate
+3. [bash] pip install fastapi, uvicorn, sqlalchemy, pymysql, pydantic[email]
+3. 開 app 資料夾，在裡面開發
+4. [bash] pip freeze > requirements.txt
+5. [bash] uvicorn app.main:app --host "0.0.0.0" --port 6979
+
+# --------------------------
+# stress test
+# --------------------------
+
+1. [bash] sudo apt-get install apache2-utils -y
+ab -c 80 -n 100 'http://3.21.75.55:6979/'
+2. [bash] ab -c 80 -n 1000 'http://3.21.75.55:6979/iqm_log/?limit=100' # 同時有 80 位使用者，總請求 1000 次
